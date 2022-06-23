@@ -1,84 +1,58 @@
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public class AdditionTests {
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { 0, 1, 0, 1, "zero plus zero"},
+                {0, 1, 3, 8, "zero plus not zero"},
+                {-5, 11, 0, 1, "not zero plus zero"},
+                {3, 2, 4, 3, "positive plus positive"},
+                {2, 3, -1, 4, "positive plus negative"},
+                {-1, 4, 2, 3, "negative plus positive"},
+                {-2, 3, -3, 3, "negative plus negative"}
+        });
+    }
+    //Parameters
+    int firstNumerator;
+    int firstDenominator;
+    int secondNumerator;
+    int secondDenominator;
+    String message;
 
-    //1
-    @Test
-    public void testZeroPlusZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0, 1);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 0, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 1, sum.getDenominator());
+    Rational firstNumber;
+    Rational secondNumber;
+    Rational sum;
+
+    public AdditionTests(int firstNumerator,
+                         int firstDenominator,
+                         int secondNumerator,
+                         int secondDenominator,
+                         String fragmentMessage
+    ){
+        this.firstNumerator = firstNumerator;
+        this.firstDenominator = firstDenominator;
+        this.secondNumerator = secondNumerator;
+        this.secondDenominator = secondDenominator;
+        this.message = String.format("Addition %s failed", fragmentMessage);
+        this.firstNumber = new Rational(firstNumerator, firstDenominator);
+        this.secondNumber = new Rational(secondNumerator, secondDenominator);
     }
 
-    //2
     @Test
-    public void testZeroPlusNotZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(3, 8);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 3, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 8, sum.getDenominator());
-    }
+    public void shouldReturnCorrectSum(){
+        sum = firstNumber.plus(secondNumber);
+        int expectedNumerator = firstNumerator * secondDenominator + secondNumerator * firstDenominator;
+        int expectedDenominator =  firstDenominator * secondDenominator;
+        assertEquals(message, new Rational(expectedNumerator, expectedDenominator), sum);
 
-    //3
-    @Test
-    public void testNotZeroPlusZero(){
-        Rational number1 = new Rational(5, 11);
-        Rational number2 = new Rational(0, 1);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 5, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 11, sum.getDenominator());
-    }
-
-    //4
-    @Test
-    public void testPositivePlusPositive(){
-        Rational number1 = new Rational(3, 2);
-        Rational number2 = new Rational(4, 3);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 17, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 6, sum.getDenominator());
-    }
-
-    //5
-    @Test
-    public void testPositivePlusNegative(){
-        Rational number1 = new Rational(2, 3);
-        Rational number2 = new Rational(-1, 4);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 5, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 12, sum.getDenominator());
-    }
-
-    //6
-    @Test
-    public void testNegativePlusPositive(){
-        Rational number1 = new Rational(-1, 4);
-        Rational number2 = new Rational(2, 3);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", 5, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 12, sum.getDenominator());
-    }
-
-    //7
-    @Test
-    public void testNegativePlusNegative(){
-        Rational number1 = new Rational(-2, 3);
-        Rational number2 = new Rational(-3, 3);
-        Rational sum = number1.plus(number2);
-        assertEquals("Addition returns wrong numerator", -5, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 3, sum.getDenominator());
-    }
-
-    //8
-    @Test
-    public void testSelfSum(){
-        Rational number = new Rational(1, 2);
-        Rational sum = number.plus(number);
-        assertEquals("Addition returns wrong numerator", 1, sum.getNumerator());
-        assertEquals("Addition returns wrong denominator", 1, sum.getDenominator());
     }
 }
