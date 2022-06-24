@@ -36,7 +36,6 @@ public class SelfOperationTests {
         message = "Standard constructor returns wrong %s";
         assertEquals(String.format(message,"numerator"), 0, number.getNumerator());
         assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
-
     }
 
     @Test
@@ -48,5 +47,11 @@ public class SelfOperationTests {
     public void testSelfDivision() {
         Rational quotient = number.divide(number);
         assertEquals(String.format(message, "Division"), new Rational(1, 1), quotient);
+    }
+
+    @Test
+    public void testSelfMultiplication(){
+        Rational product = number.multiply(number);
+        assertEquals(String.format(message, "Multiplication"), new Rational(numerator * numerator, denominator * denominator), product);
     }
 }
