@@ -1,98 +1,58 @@
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public class DivisionTests {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
-    //1
-    @Test
-    public void testPositiveDivideZero(){
-        Rational number1 = new Rational(1, 3);
-        Rational number2 = new Rational(0, 1);
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        number1.divide(number2);
+    @Parameterized.Parameters
+    public static Collection<Object[]> data(){
+        return Arrays.asList(new Object[][]{
+                {0, 1, 9, 5, "zero by positive"},
+                {0, 1, -3, 4, "zero by negative"},
+                {3, 4, 5, 4, "positive by positive"},
+                {7, 10, -5, 6, "positive by negative"},
+                {-3, 4, 2, 7, "negative by positive"},
+                {-1, 4, -2, 4, "negative by negative"}
+
+        });
     }
 
-    //2
-    @Test
-    public void testNegativeDivideZero(){
-        Rational number1 = new Rational(-2, 5);
-        Rational number2 = new Rational(0, 1);
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        number1.divide(number2);
+    int firstNumerator;
+    int firstDenominator;
+    int secondNumerator;
+    int secondDenominator;
+    String message;
+    Rational divisible;
+    Rational divisor;
+    Rational quotient;
+
+    public DivisionTests(int firstNumerator,
+                         int firstDenominator,
+                         int secondNumerator,
+                         int secondDenominator,
+                         String fragmentMessage
+    ){
+        this.firstNumerator = firstNumerator;
+        this.firstDenominator = firstDenominator;
+        this.secondNumerator = secondNumerator;
+        this.secondDenominator = secondDenominator;
+        this.divisible = new Rational(firstNumerator, firstDenominator);
+        this.divisor = new Rational(secondNumerator, secondDenominator);
+        this.message = String.format("Division %s failed", fragmentMessage);
     }
 
-    //3
     @Test
-    public void testZeroDivideZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0, 1);
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        number1.divide(number2);
-    }
-
-    //4
-    @Test
-    public void testPositiveDividePositive(){
-        Rational number1 = new Rational(3, 4);
-        Rational number2 = new Rational(5, 4);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", 3, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 5, number3.getDenominator());
-    }
-
-    //5
-    @Test
-    public void testZeroDividePositive(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(9, 5);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", 0, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 1, number3.getDenominator());
-    }
-
-    //6
-    @Test
-    public void testNegativeDividePositive(){
-        Rational number1 = new Rational(-3, 4);
-        Rational number2 = new Rational(2, 7);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", -21, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 8, number3.getDenominator());
-    }
-
-    //7
-    @Test
-    public void testPositiveDivideNegative(){
-        Rational number1 = new Rational(7, 10);
-        Rational number2 = new Rational(-5, 6);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", -21, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 25, number3.getDenominator());
-    }
-
-    //8
-    @Test
-    public void testZeroDivideNegative(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(-11, 17);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", 0, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 1, number3.getDenominator());
-    }
-
-    //9
-    @Test
-    public void testNegativeDivideNegative(){
-        Rational number1 = new Rational(-1, 4);
-        Rational number2 = new Rational(-2, 4);
-        Rational number3 = number1.divide(number2);
-        assertEquals("Division returns wrong numerator", 1, number3.getNumerator());
-        assertEquals("Division returns wrong denominator", 2, number3.getDenominator());
+    public void shouldReturnCorrectQuotient(){
+        quotient = divisible.divide(divisor);
+        int expectedNumerator = firstNumerator * secondDenominator;
+        int expectedDenominator = firstDenominator * secondNumerator;
+        assertEquals(message, new Rational(expectedNumerator, expectedDenominator), quotient);
     }
 }

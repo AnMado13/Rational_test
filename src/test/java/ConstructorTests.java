@@ -25,15 +25,6 @@ public class ConstructorTests {
     }
 
     @Test
-    public void testZeroDenominatorConstructor(){
-        message = "division by zero !";
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage(message);
-        number = new Rational(1, 0);
-    }
-
-
-    @Test
     public void testZeroNumeratorConstructor(){
         number = new Rational(0, 7);
         message = "Constructor for zero returns wrong %s";
