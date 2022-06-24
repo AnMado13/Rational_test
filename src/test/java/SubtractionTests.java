@@ -1,85 +1,58 @@
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public class SubtractionTests {
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { 0, 1, 0, 1, "zero minus zero"},
+                {0, 1, 3, 8, "zero minus not zero"},
+                {-5, 11, 0, 1, "not zero minus zero"},
+                {3, 2, 4, 3, "positive minus positive"},
+                {2, 3, -1, 4, "positive minus negative"},
+                {-1, 4, 2, 3, "negative minus positive"},
+                {-2, 3, -3, 3, "negative minus negative"}
+        });
+    }
+    //Parameters
+    int firstNumerator;
+    int firstDenominator;
+    int secondNumerator;
+    int secondDenominator;
+    String message;
 
-    //1
-    @Test
-    public void testZeroMinusZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0, 1);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", 0, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 1, sub.getDenominator());
+    Rational firstNumber;
+    Rational secondNumber;
+    Rational difference;
 
+    public SubtractionTests(int firstNumerator,
+                            int firstDenominator,
+                            int secondNumerator,
+                            int secondDenominator,
+                            String fragmentMessage
+    ){
+        this.firstNumerator = firstNumerator;
+        this.firstDenominator = firstDenominator;
+        this.secondNumerator = secondNumerator;
+        this.secondDenominator = secondDenominator;
+        this.message = String.format("Subtraction %s failed", fragmentMessage);
+        this.firstNumber = new Rational(firstNumerator, firstDenominator);
+        this.secondNumber = new Rational(secondNumerator, secondDenominator);
     }
 
-    //2
     @Test
-    public void testZeroMinusNotZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(3, 8);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", -3, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 8, sub.getDenominator());
-    }
+    public void shouldReturnCorrectDifference(){
+        difference = firstNumber.minus(secondNumber);
+        int expectedNumerator = firstNumerator * secondDenominator - secondNumerator * firstDenominator;
+        int expectedDenominator =  firstDenominator * secondDenominator;
+        assertEquals(message, new Rational(expectedNumerator, expectedDenominator), difference);
 
-    //3
-    @Test
-    public void testNotZeroMinusZero(){
-        Rational number1 = new Rational(5, 11);
-        Rational number2 = new Rational(0, 1);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", 5, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 11, sub.getDenominator());
-    }
-
-    //4
-    @Test
-    public void testPositiveMinusPositive(){
-        Rational number1 = new Rational(3, 2);
-        Rational number2 = new Rational(4, 3);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", 1, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 6, sub.getDenominator());
-    }
-
-    //5
-    @Test
-    public void testPositiveMinusNegative(){
-        Rational number1 = new Rational(2, 3);
-        Rational number2 = new Rational(-1, 4);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", 11, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 12, sub.getDenominator());
-    }
-
-    //6
-    @Test
-    public void testNegativeMinusPositive(){
-        Rational number1 = new Rational(-1, 4);
-        Rational number2 = new Rational(2, 3);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", -11, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 12, sub.getDenominator());
-    }
-
-    //7
-    @Test
-    public void testNegativeMinusNegative(){
-        Rational number1 = new Rational(-2, 3);
-        Rational number2 = new Rational(-3, 3);
-        Rational sub = number1.minus(number2);
-        assertEquals("Subtraction returns wrong numerator", 1, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 3, sub.getDenominator());
-    }
-
-    //8
-    @Test
-    public void testSelfSubtraction(){
-        Rational number = new Rational(1, 2);
-        Rational sub = number.minus(number);
-        assertEquals("Subtraction returns wrong numerator", 0, sub.getNumerator());
-        assertEquals("Subtraction returns wrong denominator", 1, sub.getDenominator());
     }
 }

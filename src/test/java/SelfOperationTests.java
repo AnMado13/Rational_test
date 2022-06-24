@@ -25,6 +25,21 @@ public class SelfOperationTests {
     }
 
     @Test
+    public void testSelfSubtraction(){
+        Rational difference = number.minus(number);
+        assertEquals(String.format(message, "Subtraction"), new Rational(0, 1), difference);
+    }
+
+    @Test
+    public void testStandardConstructor() {
+        number = new Rational();
+        message = "Standard constructor returns wrong %s";
+        assertEquals(String.format(message,"numerator"), 0, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
+
+    }
+
+    @Test
     public void testSelfEquality(){
         assertTrue(String.format(message, "Self-equality"), number.equals(number));
     }
