@@ -95,13 +95,4 @@ public class DivisionTests {
         assertEquals("Division returns wrong numerator", 1, number3.getNumerator());
         assertEquals("Division returns wrong denominator", 2, number3.getDenominator());
     }
-
-    //10
-    @Test
-    public void testSelfDivision(){
-        Rational number1 = new Rational(3, 4);
-        Rational number2 = number1.divide(number1);
-        assertEquals("Division returns wrong numerator", 1, number2.getNumerator());
-        assertEquals("Division returns wrong denominator", 1, number2.getDenominator());
-    }
 }

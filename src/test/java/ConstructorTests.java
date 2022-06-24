@@ -1,114 +1,108 @@
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
 public class ConstructorTests {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    //1
+    Rational number;
+    String message;
+
     @Test
     public void testStandardConstructor() {
-        Rational standard = new Rational();
-        assertEquals("Standard constructor returns wrong numerator", 0, standard.getNumerator());
-        assertEquals("Standard constructor returns wrong denominator", 1, standard.getDenominator());
+        number = new Rational();
+        message = "Standard constructor returns wrong %s";
+        assertEquals(String.format(message,"numerator"), 0, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
 
     }
 
-    //2
     @Test
-    public void testPositiveNumeratorZeroConstructor(){
+    public void testZeroDenominatorConstructor(){
+        message = "division by zero !";
         thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        Rational number = new Rational(3, 0);
+        thrown.expectMessage(message);
+        number = new Rational(1, 0);
     }
 
-    //3
-    @Test
-    public void testNegativeNumeratorZeroConstructor(){
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        Rational number = new Rational(-5, 0);
-    }
 
-    //4
-    @Test
-    public void testZeroNumeratorZeroConstructor(){
-        thrown.expect(ArithmeticException.class);
-        thrown.expectMessage("division by zero !");
-        Rational number = new Rational(0, 0);
-    }
-
-    //5
     @Test
     public void testZeroNumeratorConstructor(){
-        Rational number = new Rational(0, 7);
-        assertEquals("Constructor for null returns a non-zero numerator", 0, number.getNumerator());
-        assertEquals("Constructor for null returns a wrong denominator", 1, number.getDenominator());
+        number = new Rational(0, 7);
+        message = "Constructor for zero returns wrong %s";
+        assertEquals(String.format(message, "numerator"), 0, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
     }
 
-    //6
     @Test
     public void testPositiveNumeratorAndDenominatorConstructor(){
-        Rational number = new Rational(3, 7);
-        assertEquals("Constructor returns wrong numerator", 3, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 7, number.getDenominator());
+        number = new Rational(3, 7);
+        message = "Constructor for positive numerator and denominator returns wrong %s";
+        assertEquals(String.format(message, "numerator"), 3, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 7, number.getDenominator());
     }
 
-    //7
     @Test
     public void testNegativeNumeratorAndDenominatorConstructor(){
-        Rational number = new Rational(-5, -11);
-        assertEquals("Constructor returns wrong numerator", 5, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 11, number.getDenominator());
+        number = new Rational(-5, -11);
+        message = "Constructor for negative numerator and denominator returns wrong %s";
+        assertEquals(String.format(message, "numerator"), 5, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 11, number.getDenominator());
     }
 
-    //8
     @Test
     public void testNegativeNumeratorPositiveDenominatorConstructor(){
-        Rational number = new Rational(-2, 9);
-        assertEquals("Constructor returns wrong numerator", -2, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 9, number.getDenominator());
+        number = new Rational(-2, 9);
+        message = "Constructor for negative numerator and positive denominator returns wrong %s";
+        assertEquals(String.format(message, "numerator"), -2, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 9, number.getDenominator());
     }
 
-    //9
     @Test
     public void testPositiveNumeratorNegativeDenominatorConstructor(){
-        Rational number = new Rational(17, -2);
-        assertEquals("Constructor returns wrong numerator", -17, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 2, number.getDenominator());
+        number = new Rational(17, -2);
+        message = "Constructor for positive numerator and negative denominator returns wrong %s";
+        assertEquals(String.format(message, "numerator"), -17, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 2, number.getDenominator());
     }
 
-    //10
     @Test
-    public void testReductionPositiveNumbers(){
-        Rational number = new Rational(18, 45);
-        assertEquals("Constructor returns wrong numerator", 2, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 5, number.getDenominator());
+    public void testReductionPositivePositive(){
+        number = new Rational(18, 45);
+        message = "Constructor made wrong reduction for positive numerator and denominator: it returns incorrect %s";
+        assertEquals(String.format(message, "numerator"), 2, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 5, number.getDenominator());
     }
 
-    //11
     @Test
-    public void testFractionReductionNegativeNumbers(){
-        Rational number = new Rational(-10, -25);
-        assertEquals("Constructor returns wrong numerator", 2, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 5, number.getDenominator());
+    public void testReductionNegativeNegative(){
+        number = new Rational(-10, -25);
+        message = "Constructor made wrong reduction for negative numerator and denominator: it returns incorrect %s";
+        assertEquals(String.format(message, "numerator"), 2, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 5, number.getDenominator());
     }
 
-    //12
     @Test
-    public void testFractionReductionPositiveNegative(){
-        Rational number = new Rational(50, -10);
-        assertEquals("Constructor returns wrong numerator", -5, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 1, number.getDenominator());
+    public void testReductionPositiveNegative(){
+        number = new Rational(50, -10);
+        message = "Constructor made wrong reduction for positive numerator and negative denominator: it returns incorrect %s";
+        assertEquals(String.format(message, "numerator"), -5, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
     }
 
-    //13
     @Test
-    public void testFractionReductionNegativePositive(){
+    public void testReductionNegativePositive(){
         Rational number = new Rational(-20, 20);
-        assertEquals("Constructor returns wrong numerator", -1, number.getNumerator());
-        assertEquals("Constructor returns wrong denominator", 1, number.getDenominator());
+        message = "Constructor made wrong reduction for negative numerator and positive denominator: it returns incorrect %s";
+        assertEquals(String.format(message, "numerator"), -1, number.getNumerator());
+        assertEquals(String.format(message,"denominator"), 1, number.getDenominator());
     }
 
 

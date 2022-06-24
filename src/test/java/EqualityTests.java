@@ -1,21 +1,40 @@
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public class EqualityTests {
 
-    //1
-    @Test
-    public void testSelfEquality(){
-        Rational number1 = new Rational(2, 9);
-        assertTrue("Equality is violated", number1.equals(number1));
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+            {0, 1, 0, 1, }
+        });
     }
 
-    //2
+    String message;
+    Rational firstNumber;
+    Rational secondNumber;
+
+    public EqualityTests(int firstNumerator,
+                         int firstDenominator,
+                         int secondNumerator,
+                         int secondDenominator,
+                         String fragmentMessage
+    ){
+        this.message = String.format("Addition %s failed", fragmentMessage);
+        this.firstNumber = new Rational(firstNumerator, firstDenominator);
+        this.secondNumber = new Rational(secondNumerator, secondDenominator);
+    }
+    //Warnings are incorrect, because we test "equals" method in our class
     @Test
-    public void testZeroEqualZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0, 1);
-        assertTrue("Equality is violated", number1.equals(number2));
+    public void testEquality(){
+        assertTrue("Equality is violated", firstNumber.equals(secondNumber));
     }
 
     //3
@@ -31,7 +50,7 @@ public class EqualityTests {
     public void testPositiveEqual(){
         Rational number1 = new Rational(3, 5);
         Rational number2 = new Rational(3, 5);
-        assertTrue("Equality is violated", number1.equals(number2));
+        assertEquals("Equality is violated", number1, number2);
     }
 
     //5
