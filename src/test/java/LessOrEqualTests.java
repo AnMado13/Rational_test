@@ -3,68 +3,62 @@ import static org.junit.Assert.*;
 
 public class LessOrEqualTests {
 
-    //1
+    static String message;
+    Rational firstNumber;
+    Rational secondNumber;
+
+    @BeforeClass
+    public static void createMessage(){
+        message = "Inequality failed: ";
+    }
+
+    @Test
+    public void testInequalityHoldsForPositive(){
+        firstNumber = new Rational(2, 1);
+        secondNumber = new Rational(7, 2);
+        assertTrue(message + "Lesser number isn't less or equal than greater (for positive)", firstNumber.lessOrEqual(secondNumber));
+    }
+
+    @Test
+    public void testInequalityHoldsForNegative(){
+        firstNumber = new Rational(-2, 3);
+        secondNumber = new Rational(-1, 5);
+        assertTrue(message + "Lesser number isn't less or equal than greater (for negative)", firstNumber.lessOrEqual(secondNumber));
+    }
+
+    @Test
+    public void testInequalityHoldsForDifferentSigns(){
+        firstNumber = new Rational(-10, 3);
+        secondNumber = new Rational(3, 4);
+        assertTrue(message + "Negative number isn't less or equal than positive", firstNumber.lessOrEqual(secondNumber));
+    }
+
     @Test
     public void testZeroLessOrEqualZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0, 1);
-        assertTrue("Zero cannot be less or greater than zero", number1.lessOrEqual(number2));
+        firstNumber = new Rational(0, 1);
+        secondNumber = new Rational(0,1);
+        assertTrue(message + "Zero isn't less or equal zero", firstNumber.lessOrEqual(secondNumber));
     }
 
-    //2
     @Test
     public void testPositiveLessOrEqualItself(){
-        Rational number1 = new Rational(13, 3);
-        Rational number2 = new Rational(13, 3);
-        assertTrue("Positive number cannot be less or greater than itself", number1.lessOrEqual(number2));
+        firstNumber = new Rational(3, 2);
+        secondNumber = new Rational(3,2);
+        assertTrue(message + "Positive number isn't less or equal than itself", firstNumber.lessOrEqual(secondNumber));
     }
 
-    //3
     @Test
-    public void testNegativeLessOrEqualItself(){
-        Rational number1 = new Rational(-5, 4);
-        Rational number2 = new Rational(-5, 4);
-        assertTrue("Negative number cannot be less or greater than itself", number1.lessOrEqual(number2));
+    public void testNegativeNotLessItself(){
+        firstNumber = new Rational(-2, 5);
+        secondNumber = new Rational(-2, 5);
+        assertTrue(message + "Negative number isn't less or equal than itself", firstNumber.lessOrEqual(secondNumber));
     }
 
-    //4
     @Test
-    public void testLessOrEqualSelf(){
-        Rational number1 = new Rational(-3, 19);
-        assertTrue("Inequality does not hold", number1.lessOrEqual(number1));
+    public void testGreaterNotLessOrEqualLesser(){
+        firstNumber = new Rational(3, 4);
+        secondNumber = new Rational(1, 5);
+        assertFalse(message + "Greater number less or equal than a lesser one", firstNumber.lessOrEqual(secondNumber));
     }
-
-    //5
-    @Test
-    public void testGreaterNotLessOrEqualLesserPositive(){
-        Rational number1 = new Rational(9, 8);
-        Rational number2 = new Rational(4, 7);
-        assertFalse("A greater number cannot be less or equal than a smaller one", number1.lessOrEqual(number2));
-    }
-
-    //6
-    @Test
-    public  void testGreaterNotLessOrEqualLesserNegative(){
-        Rational number1 = new Rational(-7, 7);
-        Rational number2 = new Rational(-8, 7);
-        assertFalse("A greater number cannot be less or equal than a smaller one", number1.lessOrEqual(number2));
-    }
-
-    //7
-    @Test
-    public  void testGreaterNotLessOrEqualLesserDifferentSigns(){
-        Rational number1 = new Rational(1, 5);
-        Rational number2 = new Rational(-8, 3);
-        assertFalse("A greater number cannot be less or equal than a smaller one", number1.lessOrEqual(number2));
-    }
-
-    //8
-    @Test
-    public void testLesserLessOrEqualGreater(){
-        Rational number1 = new Rational(2, 5);
-        Rational number2 = new Rational(3, 5);
-        assertTrue("Inequality does not hold", number1.lessOrEqual(number2));
-    }
-
 
 }

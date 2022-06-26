@@ -1,93 +1,68 @@
 import org.junit.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.Collection;
-
 import static org.junit.Assert.*;
 
-@RunWith(Parameterized.class)
 public class EqualityTests {
 
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-            {0, 1, 0, 1, }
-        });
-    }
-
-    String message;
+    static String message;
     Rational firstNumber;
     Rational secondNumber;
 
-    public EqualityTests(int firstNumerator,
-                         int firstDenominator,
-                         int secondNumerator,
-                         int secondDenominator,
-                         String fragmentMessage
-    ){
-        this.message = String.format("Addition %s failed", fragmentMessage);
-        this.firstNumber = new Rational(firstNumerator, firstDenominator);
-        this.secondNumber = new Rational(secondNumerator, secondDenominator);
+    @BeforeClass
+    public static void createMessage(){
+        message = "Equality failed: ";
     }
+
     //Warnings are incorrect, because we test "equals" method in our class
     @Test
-    public void testEquality(){
-        assertTrue("Equality is violated", firstNumber.equals(secondNumber));
+    public  void testZeroEqual(){
+        firstNumber = new Rational();
+        secondNumber = new Rational();
+        assertTrue(message + "Zero is not equal zero", firstNumber.equals(secondNumber));
     }
-
-    //3
     @Test
     public void testNegativeEqual(){
-        Rational number1 = new Rational(-1, 3);
-        Rational number2 = new Rational(-1, 3);
-        assertTrue("Equality is violated", number1.equals(number2));
+        firstNumber = new Rational(-1, 3);
+        secondNumber = new Rational(-1, 3);
+        assertTrue(message + "Negative is not equal itself", firstNumber.equals(secondNumber));
     }
 
-    //4
     @Test
     public void testPositiveEqual(){
-        Rational number1 = new Rational(3, 5);
-        Rational number2 = new Rational(3, 5);
-        assertEquals("Equality is violated", number1, number2);
+        firstNumber = new Rational(3, 5);
+        secondNumber = new Rational(3, 5);
+        assertTrue(message + "Positive is not equal itself", firstNumber.equals(secondNumber));
     }
 
-    //5
     @Test
     public void testDifferentSignsNotEqual(){
-        Rational number1 = new Rational(2, 11);
-        Rational number2 = new Rational(-2, 11);
-        assertFalse("Impossible equality", number1.equals(number2));
+        firstNumber = new Rational(-4, 7);
+        secondNumber = new Rational(4, 7);
+        assertFalse(message + "Numbers with different signs are equal", firstNumber.equals(secondNumber));
     }
 
-    //6
     @Test
-    public void testPositiveNotEqual(){
-        Rational number1 = new Rational(3, 17);
-        Rational number2 = new Rational(7, 8);
-        assertFalse("Impossible equality", number1.equals(number2));
+    public void testDifferentPositiveNotEqual(){
+        firstNumber = new Rational(3, 4);
+        secondNumber = new Rational(2, 5);
+        assertFalse(message + "Different positive numbers are equal", firstNumber.equals(secondNumber));
     }
 
-    //7
     @Test
-    public void testNegativeNotEqual(){
-        Rational number1 = new Rational(-4, 19);
-        Rational number2 = new Rational(-5, 2);
-        assertFalse("Impossible equality", number1.equals(number2));
+    public void testDifferentNegativeNotEqual(){
+        firstNumber = new Rational(-5, 4);
+        secondNumber = new Rational(-6, 5);
+        assertFalse(message + "Different positive numbers are equal", firstNumber.equals(secondNumber));
     }
 
-    //8
     @Test
     public void testRationalNotNull(){
         Rational number1 = new Rational();
-        assertFalse("Rational is Null", number1.equals(null));
+        assertFalse(message+ "Rational is Null", number1.equals(null));
     }
 
-    //9
     @Test
     public void testRationalNotOtherClass(){
         Rational number1 = new Rational();
-        assertFalse("Rational number equals number from another Class", number1.equals(0));
+        assertFalse(message + "Rational is a number from another Class", number1.equals(0));
     }
 }

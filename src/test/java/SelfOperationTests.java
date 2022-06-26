@@ -1,8 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SelfOperationTests {
     int numerator;
@@ -41,6 +40,15 @@ public class SelfOperationTests {
     @Test
     public void testSelfEquality(){
         assertTrue(String.format(message, "Self-equality"), number.equals(number));
+    }
+    @Test
+    public void testSelfStrictInequality(){
+        assertFalse(String.format(message, "Strict inequality"), number.less(number));
+    }
+
+    @Test
+    public void testSelfInequality(){
+        assertTrue(String.format(message, "Inequality"), number.lessOrEqual(number));
     }
 
     @Test

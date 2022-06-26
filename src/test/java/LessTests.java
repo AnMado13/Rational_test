@@ -3,68 +3,62 @@ import static org.junit.Assert.*;
 
 public class LessTests {
 
-    //1
+    static String message;
+    Rational firstNumber;
+    Rational secondNumber;
+
+    @BeforeClass
+    public static void createMessage(){
+        message = "Strict Inequality failed: ";
+    }
+
+    @Test
+    public void testStrictInequalityHoldsForPositive(){
+        firstNumber = new Rational(2, 1);
+        secondNumber = new Rational(7, 2);
+        assertTrue(message + "Lesser number isn't less than greater (for positive)", firstNumber.less(secondNumber));
+    }
+
+    @Test
+    public void testStrictInequalityHoldsForNegative(){
+        firstNumber = new Rational(-2, 3);
+        secondNumber = new Rational(-1, 5);
+        assertTrue(message + "Lesser number isn't less than greater (for negative)", firstNumber.less(secondNumber));
+    }
+
+    @Test
+    public void testStrictInequalityHoldsForDifferentSigns(){
+        firstNumber = new Rational(-10, 3);
+        secondNumber = new Rational(3, 4);
+        assertTrue(message + "Negative number isn't less than positive", firstNumber.less(secondNumber));
+    }
+
     @Test
     public void testZeroNotLessZero(){
-        Rational number1 = new Rational(0, 1);
-        Rational number2 = new Rational(0,1);
-        assertFalse("Zero cannot be less than zero", number1.less(number2));
+        firstNumber = new Rational(0, 1);
+        secondNumber = new Rational(0,1);
+        assertFalse(message + "Zero less than zero", firstNumber.less(secondNumber));
     }
 
-    //2
     @Test
     public void testPositiveNotLessItself(){
-        Rational number1 = new Rational(3, 2);
-        Rational number2 = new Rational(3,2);
-        assertFalse("Positive number cannot be less than itself", number1.less(number2));
+        firstNumber = new Rational(3, 2);
+        secondNumber = new Rational(3,2);
+        assertFalse(message + "Positive less than itself", firstNumber.less(secondNumber));
     }
 
-    //3
     @Test
     public void testNegativeNotLessItself(){
-        Rational number1 = new Rational(-2, 5);
-        Rational number2 = new Rational(-2, 5);
-        assertFalse("Negative number cannot be less than itself", number1.less(number2));
+        firstNumber = new Rational(-2, 5);
+        secondNumber = new Rational(-2, 5);
+        assertFalse(message + "Negative less than itself", firstNumber.less(secondNumber));
     }
 
-    //4
-    @Test
-    public void testLessSelf(){
-        Rational number1 = new Rational(0, 1);
-        assertFalse("Impossible inequality", number1.less(number1));
-    }
-
-    //5
     @Test
     public void testGreaterNotLessLesser(){
-        Rational number1 = new Rational(3, 4);
-        Rational number2 = new Rational(1, 5);
-        assertFalse("A greater number cannot be less than a lesser one", number1.less(number2));
-    }
-
-    //6
-    @Test
-    public void testLesserLessGreaterForPositive(){
-        Rational number1 = new Rational(2, 1);
-        Rational number2 = new Rational(7, 2);
-        assertTrue("The inequality does not hold", number1.less(number2));
-    }
-
-
-    //7
-    @Test
-    public void testLesserLessGreaterForNegative(){
-        Rational number1 = new Rational(-2, 3);
-        Rational number2 = new Rational(-1, 5);
-        assertTrue("The inequality does not hold", number1.less(number2));
-    }
-
-    //8
-    @Test
-    public void testLesserLessGreaterDifferentSigns(){
-        Rational number1 = new Rational(-10, 3);
-        Rational number2 = new Rational(3, 4);
-        assertTrue("The inequality does not hold", number1.less(number2));
+        firstNumber = new Rational(3, 4);
+        secondNumber = new Rational(1, 5);
+        assertFalse(message + "Greater less than a lesser one", firstNumber.less(secondNumber));
     }
 
 }
