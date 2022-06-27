@@ -1,16 +1,22 @@
-- Все проверки разбиты по классам в соответствии с проверяемым функционалом: **AdditionTests**, **ConstructorTests**, **DivisionTests**, **EqualityTests**, **LessOrEqualTests**, **LessTests**, **MultiplicationTests**, **SubtractionTests** 
+- Все проверки разбиты по классам в соответствии с проверяемым функционалом: **AdditionTests**, **ConstructorReductionTests**, **ConstructorSimpleTests**, **DivisionTests**, **EqualityTests**, **ExceptionTests**, **LessOrEqualTests**, **LessTests**, **MultiplicationTests**, **SelfOperationTests**, **SubtractionTests** 
 - Инструкция к запуску:
-    - зайти в src/test
-    - В отдельном файле(классе) содержатся проверки, проверяющие одну функциональность
+    - Перейти в src/test
+    - В отдельном файле(классе) содержатся проверки, проверяющие одну функциональность класса
     - Необходимо открыть один из файлов. 
     - Нажатием Run можно запустить весь тестовый класс, содержащийся в выбранном файле.
-    - Тесты в тестовом классе не зависят друг от друга, поэтому их можно также запускать по отдельности.
 
 
 ## Баг-репорт:
--В классе LessTests падает 6й тест _(testSmallerLessLargerForPositive)_. Причина: ошибка в реализации метода less в тестируемом классе Rational. В последнем условном блоке в формуле используется getNumerator() без указания rational.
+-В классе LessTests падает тест _(testStrictInequalityHoldsForPositive)_. 
+    -Что проверяет: для положительных чисел A<B метод less должен возвращать True.
+    -Результат: для чисел 2 и 7/2 (=3.5) метод возвращает False.
+    -Возможная причина: ошибка в реализации метода less в тестируемом классе Rational. В последнем условном блоке в формуле используется getNumerator() без указания rational.
 
--В классе LessOrEqualTests падает 5й - 7й тест _(testGreaterNotLessOrEqualLesserPositive и тд)_. Причина: less or equals ссылается на метод less, в котором ошибка.
+-В классе LessOrEqualTests падает тест _(testGreaterNotLessOrEqualLesser)_. 
+    -Что проверяет: для положительных чисел A>B метод lessOrEqual должен возвращать False
+    -Результат: для 9/8 и 4/7 возвращает True.
+    -Возможная причина: less or equals ссылается на метод less, в котором ошибка.
+
 ## Чек-лист проверок:
 #### ConstructorTests:
 1) Конструктор со значением по умолчанию
