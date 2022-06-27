@@ -14,8 +14,8 @@ public class LessOrEqualTests {
 
     @Test
     public void testInequalityHoldsForPositive(){
-        firstNumber = new Rational(2, 1);
-        secondNumber = new Rational(7, 2);
+        firstNumber = new Rational(3, 2);
+        secondNumber = new Rational(8, 2);
         assertTrue(message + "Lesser number isn't less or equal than greater (for positive)", firstNumber.lessOrEqual(secondNumber));
     }
 
@@ -28,7 +28,7 @@ public class LessOrEqualTests {
 
     @Test
     public void testInequalityHoldsForDifferentSigns(){
-        firstNumber = new Rational(-10, 3);
+        firstNumber = new Rational(-10, 2);
         secondNumber = new Rational(3, 4);
         assertTrue(message + "Negative number isn't less or equal than positive", firstNumber.lessOrEqual(secondNumber));
     }
@@ -56,8 +56,8 @@ public class LessOrEqualTests {
 
     @Test
     public void testGreaterNotLessOrEqualLesser(){
-        firstNumber = new Rational(3, 4);
-        secondNumber = new Rational(1, 5);
+        firstNumber = new Rational(9, 8);
+        secondNumber = new Rational(4, 7);
         assertFalse(message + "Greater number less or equal than a lesser one", firstNumber.lessOrEqual(secondNumber));
     }
 

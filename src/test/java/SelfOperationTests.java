@@ -41,6 +41,7 @@ public class SelfOperationTests {
     public void testSelfEquality(){
         assertTrue(String.format(message, "Self-equality"), number.equals(number));
     }
+
     @Test
     public void testSelfStrictInequality(){
         assertFalse(String.format(message, "Strict inequality"), number.less(number));
